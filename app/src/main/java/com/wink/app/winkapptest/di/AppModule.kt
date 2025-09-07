@@ -1,5 +1,7 @@
 package com.wink.app.winkapptest.di
 
+import com.wink.app.data.api.UnsplashApi
+import com.wink.app.winkapptest.BuildConfig
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -38,4 +40,9 @@ object AppModule {
             .build()
     }
 
+    @Provides
+    @Singleton
+    fun provideUnsplashApi(retrofit: Retrofit): UnsplashApi {
+        return retrofit.create(UnsplashApi::class.java)
+    }
 }

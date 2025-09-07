@@ -1,0 +1,7 @@
+package com.wink.app.winkapptest.ui.screen.list.data
+
+import com.wink.app.domain.model.Photo
+
+data class ListPhotoState(
+    val photoList: List<Photo> = emptyList()
+)
