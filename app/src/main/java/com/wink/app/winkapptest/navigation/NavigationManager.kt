@@ -17,7 +17,7 @@ interface NavigationManager {
 @Singleton
 class NavigationManagerImpl @Inject constructor() : NavigationManager {
 
-    private val actionsMutableSharedFlow = MutableSharedFlow<NavigationAction>(replay = 1)
+    private val actionsMutableSharedFlow = MutableSharedFlow<NavigationAction>(replay = 0)
     override val actions = actionsMutableSharedFlow.asSharedFlow()
 
     override suspend fun navigate(

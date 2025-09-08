@@ -26,13 +26,14 @@ fun NetworkImage(
         ImageRequest.Builder(context)
             .data(data = url)
             .crossfade(true)
-            .placeholder(R.drawable.test)
+            .placeholder(R.drawable.photo_placeholder)
+            .error(R.drawable.generic_error)
             .build()
     }
 
     if (isInPreview) {
         Image(
-            painter = painterResource(id = R.drawable.test),
+            painter = painterResource(id = R.drawable.photo_placeholder),
             contentDescription = contentDescription,
             modifier = modifier
         )

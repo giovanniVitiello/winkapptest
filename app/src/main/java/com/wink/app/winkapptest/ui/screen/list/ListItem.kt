@@ -1,6 +1,7 @@
 package com.wink.app.winkapptest.ui.screen.list
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,8 +38,7 @@ fun ListItem(
                 MaterialTheme.colorScheme.primary,
                 RoundedCornerShape(8.dp)
             ),
-        shape = RoundedCornerShape(8.dp),
-        onClick = { openDetail(photo.id) }
+        shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -49,6 +49,9 @@ fun ListItem(
                 contentDescription = photo.description,
                 contentScale = ContentScale.FillWidth,
                 modifier = Modifier.fillMaxWidth()
+                    .clickable{
+                        openDetail(photo.id)
+                    }
             )
             Row(
                 horizontalArrangement = Arrangement.Start,

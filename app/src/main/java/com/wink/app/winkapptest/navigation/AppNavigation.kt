@@ -9,7 +9,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.wink.app.winkapptest.ext.catchIgnoreError
+import com.wink.app.winkapptest.utils.ext.catchIgnoreError
 import com.wink.app.winkapptest.navigation.direction.AppDirections
 import com.wink.app.winkapptest.ui.screen.detail.DetailScreen
 import kotlinx.coroutines.flow.collect

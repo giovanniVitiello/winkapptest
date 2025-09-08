@@ -4,11 +4,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.wink.app.winkapptest.ui.screen.list.ListViewModel
 
 @Composable
 fun DetailScreen(
-    viewModel: ListViewModel = hiltViewModel()
+    viewModel: DetailViewModel = hiltViewModel()
 ) {
     val state by viewModel.stateFlow.collectAsState()
 
