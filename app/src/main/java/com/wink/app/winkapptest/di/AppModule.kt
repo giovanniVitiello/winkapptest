@@ -1,5 +1,6 @@
 package com.wink.app.winkapptest.di
 
+import com.squareup.moshi.Moshi
 import com.wink.app.data.api.UnsplashApi
 import com.wink.app.winkapptest.BuildConfig
 import dagger.Module
@@ -10,6 +11,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
@@ -18,7 +20,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideApi(): Retrofit {
+    fun provideApi(moshi: Moshi): Retrofit {
         val logging = HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         }
@@ -36,7 +38,7 @@ object AppModule {
         return Retrofit.Builder()
             .baseUrl(BuildConfig.BASE_URL)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(MoshiConverterFactory.create(moshi))
             .build()
     }
 

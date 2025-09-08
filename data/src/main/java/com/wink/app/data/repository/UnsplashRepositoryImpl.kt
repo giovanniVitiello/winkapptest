@@ -9,8 +9,8 @@ class UnsplashRepositoryImpl @Inject constructor(
     private val api: UnsplashApi
 ) : UnsplashRepository {
 
-    override suspend fun searchPhotos(query: String, page: Int, perPage: Int): List<Photo> {
-        val response = api.searchPhotos(query, page, perPage)
-        return response.results.map { it.toDomain() }
+    override suspend fun searchPhotos(page: Int, perPage: Int): List<Photo> {
+        val response = api.searchPhotos(page, perPage)
+        return response.map { it.toDomain() }
     }
 }

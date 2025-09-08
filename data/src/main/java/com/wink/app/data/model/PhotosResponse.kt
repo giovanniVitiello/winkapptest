@@ -1,33 +1,45 @@
 package com.wink.app.data.model
 
+import com.squareup.moshi.Json
+import com.squareup.moshi.JsonClass
 import com.wink.app.domain.model.Photo
 
-data class PhotosResponse(
-    val results: List<PhotoDto>
-)
-
-data class PhotoDto(
-    val id: String,
-    val description: String?,
-    val altDescription: String?,
-    val urls: UrlsDto,
-    val user: UserDto
+@JsonClass(generateAdapter = true)
+data class PhotoResponse(
+    @Json(name = "id") val id: String?,
+    @Json(name = "alt_description") val altDescription: String?,
+    @Json(name = "urls") val urls: UrlsDto,
+    @Json(name = "user") val user: UserDto
 ) {
     fun toDomain(): Photo {
         return Photo(
-            id = id,
-            description = description ?: altDescription.orEmpty(),
-            imageUrl = urls.regular,
-            author = user.name
+            id = id.orEmpty(),
+            description = altDescription.orEmpty(),
+            imageUrl = urls.regular ?: urls.full ?: urls.small.orEmpty(),
+            author = user.name.orEmpty(),
+            authorImageUrl = user.profileImage?.large ?: user.profileImage?.medium ?: user.profileImage?.small.orEmpty()
         )
     }
 }
 
+@JsonClass(generateAdapter = true)
 data class UrlsDto(
-    val small: String,
-    val regular: String
+    @Json(name = "raw") val raw: String?,
+    @Json(name = "full") val full: String?,
+    @Json(name = "regular") val regular: String?,
+    @Json(name = "small") val small: String?,
+    @Json(name = "thumb") val thumb: String?
 )
 
+@JsonClass(generateAdapter = true)
 data class UserDto(
-    val name: String
+    @Json(name = "name") val name: String?,
+    @Json(name = "profile_image") val profileImage: ProfileImageDto?,
+)
+
+@JsonClass(generateAdapter = true)
+data class ProfileImageDto(
+    @Json(name = "small") val small: String?,
+    @Json(name = "medium") val medium: String?,
+    @Json(name = "large") val large: String?
 )

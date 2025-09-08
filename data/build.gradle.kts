@@ -38,6 +38,9 @@ dependencies {
     kapt(libs.hilt.compiler)
 
     implementation(libs.retrofit)
+    implementation(libs.retrofit.converter.moshi)
+    implementation(libs.moshi.core)
+    implementation(libs.moshi.kotlin)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)

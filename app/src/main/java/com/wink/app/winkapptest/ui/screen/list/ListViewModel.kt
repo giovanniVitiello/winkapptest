@@ -20,7 +20,7 @@ class ListViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            val photoList = getPhotosUseCase("cats", 1, 30)
+            val photoList = getPhotosUseCase(1, 30)
             state.emit(state.value.copy(photoList = photoList))
         }
     }
