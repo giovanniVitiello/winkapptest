@@ -10,18 +10,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.wink.app.winkapptest.navigation.AppNavigation
+import com.wink.app.winkapptest.navigation.NavigationManager
 import com.wink.app.winkapptest.ui.theme.WinkAppTestTheme
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.HiltAndroidApp
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class WinkAppTestActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var navigationManager: NavigationManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             WinkAppTestTheme {
-                    AppNavigation()
+                    AppNavigation(navigationManager)
                 }
         }
     }

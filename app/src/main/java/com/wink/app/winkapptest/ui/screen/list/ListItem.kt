@@ -1,7 +1,6 @@
 package com.wink.app.winkapptest.ui.screen.list
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,7 +27,7 @@ import com.wink.app.winkapptest.ui.utils.NetworkImage
 @Composable
 fun ListItem(
     photo: Photo,
-    onClick: () -> Unit
+    openDetail: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
@@ -38,11 +37,11 @@ fun ListItem(
                 MaterialTheme.colorScheme.primary,
                 RoundedCornerShape(8.dp)
             ),
-        shape = RoundedCornerShape(8.dp)
+        shape = RoundedCornerShape(8.dp),
+        onClick = { openDetail(photo.id) }
     ) {
         Column(
             modifier = Modifier
-                .clickable { onClick() }
                 .fillMaxSize()
         ) {
             NetworkImage(
@@ -58,11 +57,13 @@ fun ListItem(
                 Card(
                     modifier = Modifier
                         .clip(CircleShape)
-                        .size(48.dp)
                         .padding(8.dp)
+                        .size(48.dp)
                 ) {
                     NetworkImage(
-                        modifier = Modifier.fillMaxSize().clip(CircleShape),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .clip(CircleShape),
                         url = photo.authorImageUrl,
                         contentDescription = photo.description,
                         contentScale = ContentScale.Crop

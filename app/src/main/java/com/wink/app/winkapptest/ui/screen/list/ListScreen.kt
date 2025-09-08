@@ -8,21 +8,20 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import com.wink.app.winkapptest.providermock.ListScreenStateProvider
+import com.wink.app.winkapptest.ui.screen.list.data.ListPhotoAction
 import com.wink.app.winkapptest.ui.screen.list.data.ListPhotoState
 
 @Composable
 fun ListScreen(
-    navController: NavController,
     viewModel: ListViewModel = hiltViewModel()
 ) {
     val state by viewModel.stateFlow.collectAsState()
 
     ListContent(
         state,
-        onClick = {
-//            navController.navigate("detail")
+        openDetail = {
+            viewModel.dispatch(ListPhotoAction.OpenDetail(it))
         }
     )
 }
@@ -30,12 +29,12 @@ fun ListScreen(
 @Composable
 fun ListContent(
     state: ListPhotoState,
-    onClick: () -> Unit
+    openDetail: (String) -> Unit
 ) {
     LazyColumn {
         items(state.photoList) { photo ->
             ListItem(photo) {
-                onClick()
+                openDetail.invoke(it)
             }
         }
     }
