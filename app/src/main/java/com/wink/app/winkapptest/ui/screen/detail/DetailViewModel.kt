@@ -27,7 +27,7 @@ class DetailViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             val photoList = getPhotosUseCase(1, 30)
-            state.emit(state.value.copy(photoList = photoList))
+//            state.emit(state.value.copy(photoList = photoList))
         }
     }
 

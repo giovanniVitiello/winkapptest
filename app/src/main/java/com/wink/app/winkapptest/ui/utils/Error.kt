@@ -1,19 +1,18 @@
 package com.wink.app.winkapptest.ui.utils
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
-import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -68,7 +67,13 @@ fun Error(
         Spacer(modifier = Modifier.height(16.dp))
         TextButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = { onRetryClicked() }
+            onClick = { onRetryClicked() },
+            shape = MaterialTheme.shapes.medium,
+            colors = ButtonDefaults.textButtonColors(
+                containerColor = MaterialTheme.colorScheme.error,
+                contentColor = MaterialTheme.colorScheme.onError
+            ),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onError)
         ) {
             Text(
                 text = "Riprova",

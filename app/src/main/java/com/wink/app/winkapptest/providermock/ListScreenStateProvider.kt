@@ -2,11 +2,12 @@ package com.wink.app.winkapptest.providermock
 
 import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.wink.app.domain.model.Photo
+import com.wink.app.domain.toPagedList
 import com.wink.app.winkapptest.ui.screen.list.data.ListPhotoState
 import com.wink.app.winkapptest.utils.data.Resource
 
 class ListScreenStateProvider : PreviewParameterProvider<ListPhotoState> {
-    override val values: Sequence<ListPhotoState> = sequenceOf(ListPhotoState(Resource.Success(data = mockPhotoList())))
+    override val values: Sequence<ListPhotoState> = sequenceOf(ListPhotoState(Resource.Success(data = mockPhotoList().toPagedList())))
 }
 
 fun mockPhotoList() = listOf(
