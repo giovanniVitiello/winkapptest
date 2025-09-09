@@ -32,41 +32,30 @@ class ListViewModel @Inject constructor(
 
     companion object {
         const val PAGE_SIZE = 30
+        const val FIRST_PAGE = 1
     }
-//    val photos: Flow<PagingData<Photo>> =  Pager(
-//        config = PagingConfig(
-//            pageSize = PAGE_SIZE,
-//            enablePlaceholders = false,
-//            prefetchDistance = 2,
-//            initialLoadSize = PAGE_SIZE,
-//            maxSize = PAGE_SIZE * 3
-//        ),
-//        pagingSourceFactory = { PhotoPagingSource(getPhotosUseCase, PAGE_SIZE) }
-//    ).flow
-//        .cachedIn(viewModelScope)
 
     init {
         viewModelScope.launchSafe {
-            getPhotos(1)
+            getPhotos(FIRST_PAGE)
         }
     }
 
     private suspend fun getPhotos(page: Int) {
+        state.update { currentState -> currentState.copy(firstPage = if (page == FIRST_PAGE) Resource.Loading else Resource.Success(data = Any())) }
         flow {
             emit(getPhotosUseCase(page, PAGE_SIZE))
         }
             .asResource()
             .collect { resource ->
-                state.update { currentState ->
-                    currentState.copy(photoListResource = updatePhotoWithPagedList(resource))
-                }
+                updatePhotoWithPagedList(resource, page)
             }
     }
 
     private suspend fun setScrollPosition(position: Int) {
         if (state.value.photoListResource is Resource.Success) {
-            val list = (state.value.photoListResource as Resource.Success).data
-            if ((position + 1) >= (list.size))
+            val list = (state.value.photoListResource as Resource.Success<PagedList<Photo>>).data
+            if ((position + 1) >= (state.value.allPhotos.size))
                 getNextPage(list)
         }
     }
@@ -81,20 +70,58 @@ class ListViewModel @Inject constructor(
 
     private fun updatePhotoWithPagedList(
         photos: Resource<PagedList<Photo>>,
-    ): Resource<PagedList<Photo>> =
+        page: Int
+    ) {
+
         when (photos) {
             is Resource.Success -> {
-                if (photos.data.page == 0 || photos.data.size > PAGE_SIZE) {
-                    photos
-                } else if (state.value.photoListResource is Resource.Success) {
-                    Resource.Success(data = (state.value.photoListResource as Resource.Success<PagedList<Photo>>).data.addPage(photos.data))
-                } else photos
+                state.update { currentState ->
+                    currentState.copy(
+                        photoListResource = Resource.Success(data = photos.data), allPhotos = state.value.allPhotos.addPage(photos.data),
+                        firstPage = Resource.Success(data = Any())
+                    )
+                }
             }
 
-            else -> photos
+            is Resource.Loading -> if (page != FIRST_PAGE) {
+                state.update { currentState ->
+                    currentState.copy(
+                        allPhotos = state.value.allPhotos,
+                        photoListResource = photos,
+                        firstPage = Resource.Success(data = Any())
+                    )
+                }
+            }
+
+            else -> {
+                state.update { currentState ->
+                    currentState.copy(
+                        allPhotos = state.value.allPhotos,
+                        photoListResource = photos,
+                        firstPage = Resource.Success(data = Any())
+                    )
+                }
+            }
         }
+    }
 
+    private fun retryNextPage() {
+        val actualPhotos = state.value.allPhotos
 
+        if (actualPhotos.isEmpty().not() && actualPhotos.isCompleted.not()) {
+            val nextPage = actualPhotos.page + 1
+
+            if (nextPage != FIRST_PAGE) {
+                viewModelScope.launchSafe {
+                    getPhotos(nextPage)
+                }
+            }
+        } else {
+            viewModelScope.launchSafe {
+                getPhotos(FIRST_PAGE)
+            }
+        }
+    }
 
     fun dispatch(action: ListPhotoAction) {
         when (action) {
@@ -106,13 +133,19 @@ class ListViewModel @Inject constructor(
 
             ListPhotoAction.GetPhotos -> {
                 viewModelScope.launchSafe {
-                    getPhotos(1)
+                    getPhotos(FIRST_PAGE)
                 }
             }
 
             is ListPhotoAction.OnScrollPosition -> {
                 viewModelScope.launchSafe {
                     setScrollPosition(action.position)
+                }
+            }
+
+            ListPhotoAction.RetryNextPage -> {
+                viewModelScope.launchSafe {
+                    retryNextPage()
                 }
             }
         }

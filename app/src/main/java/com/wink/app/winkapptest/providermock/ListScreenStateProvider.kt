@@ -7,7 +7,13 @@ import com.wink.app.winkapptest.ui.screen.list.data.ListPhotoState
 import com.wink.app.winkapptest.utils.data.Resource
 
 class ListScreenStateProvider : PreviewParameterProvider<ListPhotoState> {
-    override val values: Sequence<ListPhotoState> = sequenceOf(ListPhotoState(Resource.Success(data = mockPhotoList().toPagedList())))
+    override val values: Sequence<ListPhotoState> = sequenceOf(
+        ListPhotoState(
+            photoListResource = Resource.Success(data = mockPhotoList().toPagedList()),
+            allPhotos = mockPhotoList().toPagedList(),
+            firstPage = Resource.Success(data = Any())
+        )
+    )
 }
 
 fun mockPhotoList() = listOf(

@@ -38,9 +38,9 @@ fun <T> executeUseCase(block: suspend () -> T): Flow<Resource<T>> = flow {
 
 fun <T> Flow<T>.asResource(): Flow<Resource<T>> {
     return this
-        .map<T, Resource<T>> { data -> Resource.Success(data) } // Mappa il successo
-        .onStart { emit(Resource.Loading) } // Emetti Loading all'inizio
-        .catch { throwable -> // Cattura le eccezioni dal flusso upstream
+        .map<T, Resource<T>> { data -> Resource.Success(data) }
+        .onStart { emit(Resource.Loading) }
+        .catch { throwable ->
             emit(Resource.Error(throwable.message ?: "Errore sconosciuto", throwable))
         }
 }
