@@ -45,7 +45,7 @@ object AppModule {
             .addNetworkInterceptor { chain ->
                 val response = chain.proceed(chain.request())
                 response.newBuilder()
-                    .header("Cache-Control", "public, max-age=3600")
+                    .header("Cache-Control", "public, max-age=360")
                     .build()
             }
             .build()
