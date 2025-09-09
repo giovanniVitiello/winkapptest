@@ -11,7 +11,7 @@ e gestione degli stati di caricamento/errore.
 - **Jetpack Compose**: UI dichiarativa e moderna.
 - **MVI**: Architettura unidirezionale per separare logica di business e UI.
 - **Paginazione custom**: implementata internamente per avere controllo completo sul caricamento e caching dei dati paginati.
-- **Retrofit** con caching: per le chiamate di rete efficienti.
+- **Retrofit** con caching di 10 minuti: per le chiamate di rete efficienti.
 - **Coil** con `AsyncImage`: per il caricamento asincrono delle immagini.
 - **Hilt**: Dependency Injection semplice e sicura.
 - **Gestione degli stati con `Resource`**: supporto integrato a **Loading**, **Success** e **Error** negli UseCase tramite Flow.

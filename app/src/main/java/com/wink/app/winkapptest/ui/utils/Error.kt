@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.wink.app.winkapptest.R
+import com.wink.app.winkapptest.ui.theme.ErrorColor
 
 @Composable
 fun Error(
     error: Throwable?,
     onRetryClicked: () -> Unit,
     modifier: Modifier = Modifier,
-    background: Color = MaterialTheme.colorScheme.background,
+    background: Color = Color.White,
     padding: PaddingValues = PaddingValues(16.dp),
 ) {
     Column(
@@ -56,7 +57,7 @@ fun Error(
             text = error?.message.orEmpty(),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = Color.Black,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -68,16 +69,16 @@ fun Error(
             onClick = { onRetryClicked() },
             shape = MaterialTheme.shapes.medium,
             colors = ButtonDefaults.textButtonColors(
-                containerColor = MaterialTheme.colorScheme.error,
-                contentColor = MaterialTheme.colorScheme.onError
+                containerColor = ErrorColor,
+                contentColor = ErrorColor
             ),
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.onError)
+            border = BorderStroke(1.dp, ErrorColor)
         ) {
             Text(
                 text = stringResource(R.string.retry),
                 style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                color = MaterialTheme.colorScheme.onBackground
+                color = Color.Black
             )
         }
     }

@@ -11,26 +11,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wink.app.domain.model.Photo
+import com.wink.app.winkapptest.ui.screen.BottomPhoto
+import com.wink.app.winkapptest.ui.theme.Container
 import com.wink.app.winkapptest.ui.utils.NetworkImage
 
 @Composable
@@ -49,7 +43,7 @@ fun DetailPhoto(
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 4.dp)
                 .background(
-                    MaterialTheme.colorScheme.primary,
+                    Container,
                     RoundedCornerShape(8.dp)
                 ),
             shape = RoundedCornerShape(8.dp)
@@ -76,38 +70,10 @@ fun DetailPhoto(
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.Top,
+            modifier = Modifier
+                .padding(vertical = 2.dp)
         ) {
-            Card(
-                modifier = Modifier
-                    .padding(8.dp)
-                    .clip(CircleShape)
-                    .size(48.dp)
-            ) {
-                NetworkImage(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .clip(CircleShape),
-                    url = photo.authorImageUrl,
-                    contentDescription = photo.description,
-                    contentScale = ContentScale.Crop
-                )
-            }
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center,
-                modifier = Modifier.padding(vertical = 2.dp)
-            ) {
-                Text(
-                    text = photo.author,
-                    style = MaterialTheme.typography.bodyMedium,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-                Text(
-                    text = photo.description,
-                    style = MaterialTheme.typography.bodySmall
-                )
-            }
+            BottomPhoto(photo, maxLines = Int.MAX_VALUE)
         }
     }
 }
