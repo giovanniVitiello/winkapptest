@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -103,7 +104,18 @@ fun ListContent(
 
 }
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(
+    name = "Phone",
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.PIXEL_4
+)
+@Preview(
+    name = "Tablet",
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.TABLET
+)
 @Composable
 fun ModifyLimitsScreenPreview(
     @PreviewParameter(ListScreenStateProvider::class) state: ListPhotoState

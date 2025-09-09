@@ -21,11 +21,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.wink.app.winkapptest.R
 
 @Composable
@@ -55,9 +54,8 @@ fun Error(
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = error?.message.orEmpty(),
-            fontWeight = FontWeight.Bold,
+            style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier.fillMaxWidth()
         )
@@ -76,10 +74,9 @@ fun Error(
             border = BorderStroke(1.dp, MaterialTheme.colorScheme.onError)
         ) {
             Text(
-                text = "Riprova",
-                fontWeight = FontWeight.Bold,
+                text = stringResource(R.string.retry),
+                style = MaterialTheme.typography.titleLarge,
                 textAlign = TextAlign.Center,
-                fontSize = 20.sp,
                 color = MaterialTheme.colorScheme.onBackground
             )
         }
@@ -90,7 +87,7 @@ fun Error(
 @Composable
 private fun ErrorPreview() {
     Error(
-        error = Throwable(message = "errore di caricamento"),
+        error = Throwable(message = stringResource(R.string.error_default_message)),
         onRetryClicked = {},
         modifier = Modifier.fillMaxSize()
     )

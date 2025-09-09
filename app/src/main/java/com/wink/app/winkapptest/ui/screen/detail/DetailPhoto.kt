@@ -99,16 +99,13 @@ fun DetailPhoto(
             ) {
                 Text(
                     text = photo.author,
-                    fontWeight = FontWeight.Medium,
+                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    lineHeight = 18.sp
+                    overflow = TextOverflow.Ellipsis
                 )
                 Text(
                     text = photo.description,
-                    fontWeight = FontWeight.Normal,
-                    modifier = Modifier,
-                    lineHeight = 18.sp
+                    style = MaterialTheme.typography.bodySmall
                 )
             }
         }

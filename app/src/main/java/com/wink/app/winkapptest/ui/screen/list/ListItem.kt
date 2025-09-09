@@ -19,7 +19,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.wink.app.domain.model.Photo
@@ -79,20 +78,18 @@ fun ListItem(
                 ) {
                     Text(
                         text = photo.author,
-                        fontWeight = FontWeight.Medium,
+                        style = MaterialTheme.typography.bodyMedium,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = photo.description,
-                        fontWeight = FontWeight.Normal,
+                        style = MaterialTheme.typography.bodySmall,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }
-
         }
     }
 }

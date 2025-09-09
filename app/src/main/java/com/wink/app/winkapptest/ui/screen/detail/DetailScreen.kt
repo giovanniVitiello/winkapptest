@@ -12,6 +12,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -69,7 +70,19 @@ fun DetailContent(
 }
 
 
-@Preview(showSystemUi = true, showBackground = true)
+@Preview(
+    name = "Phone",
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.PIXEL_4
+)
+@Preview(
+    name = "Tablet",
+    showSystemUi = true,
+    showBackground = true,
+    device = Devices.TABLET
+)
+
 @Composable
 fun ModifyLimitsScreenPreview(
     @PreviewParameter(DetailScreenStateProvider::class) state: DetailPhotoState
