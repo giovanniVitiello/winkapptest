@@ -6,7 +6,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -25,22 +24,11 @@ suspend fun <T> catchIgnoreError(block: suspend () -> T) =
         null
     }
 
-fun <T> executeUseCase(block: suspend () -> T): Flow<Resource<T>> = flow {
-    try {
-        val result = block()
-        emit(Resource.Success(result))
-    } catch (e: Throwable) {
-        emit(Resource.Error(e.message.orEmpty(), e))
-    }
-}.onStart {
-    emit(Resource.Loading)
-}
-
 fun <T> Flow<T>.asResource(): Flow<Resource<T>> {
     return this
         .map<T, Resource<T>> { data -> Resource.Success(data) }
         .onStart { emit(Resource.Loading) }
         .catch { throwable ->
-            emit(Resource.Error(throwable.message ?: "Errore sconosciuto", throwable))
+            emit(Resource.Error(throwable.message.orEmpty(), throwable))
         }
 }
