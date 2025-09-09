@@ -18,14 +18,16 @@ e gestione degli stati di caricamento/errore.
 
 Esempio di conversione di un `Flow` in `Resource`:
 
+```kotlin
 fun <T> Flow<T>.asResource(): Flow<Resource<T>> {
     return this
         .map<T, Resource<T>> { data -> Resource.Success(data) }
         .onStart { emit(Resource.Loading) }
         .catch { throwable ->
-            emit(Resource.Error(throwable.message ?: "Errore sconosciuto", throwable))
+            emit(Resource.Error(throwable.message.orEmpty(), throwable))
         }
 }
+```
 
 ---
 
