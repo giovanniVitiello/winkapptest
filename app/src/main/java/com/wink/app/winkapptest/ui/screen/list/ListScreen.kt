@@ -1,24 +1,22 @@
 package com.wink.app.winkapptest.ui.screen.list
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.wink.app.domain.PagedList
-import com.wink.app.domain.model.Photo
 import com.wink.app.winkapptest.providermock.ListScreenStateProvider
 import com.wink.app.winkapptest.ui.screen.list.data.ListPhotoAction
 import com.wink.app.winkapptest.ui.screen.list.data.ListPhotoState
@@ -43,6 +41,9 @@ fun ListScreen(
         },
         onRetry = {
             viewModel.dispatch(ListPhotoAction.RetryNextPage)
+        },
+        onSearchQueryChanged = {
+            viewModel.dispatch(ListPhotoAction.OnSearchQueryChanged(it))
         }
     )
 }
@@ -52,45 +53,53 @@ fun ListContent(
     state: ListPhotoState,
     openDetail: (String) -> Unit,
     onScrollPositionChange: (Int) -> Unit,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
+    onSearchQueryChanged: (String) -> Unit
 ) {
     val listState = rememberLazyListState()
     val photosResource = state.photoListResource
     val isFirstPage = state.firstPage
 
-    ResourceContentHandler(
-        resource = isFirstPage,
-        modifier = Modifier.fillMaxSize(),
-        onRetryClicked = onRetry
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
     ) {
+        ImageSearchBar(
+            query = state.searchQuery,
+            onQueryChange = {
+                onSearchQueryChanged(it)
+            },
+            onSearchQueryChanged
+        )
+        ResourceContentHandler(
+            resource = isFirstPage,
+            modifier = Modifier.fillMaxSize(),
+            onRetryClicked = onRetry
+        ) {
 
-        LazyColumn(state = listState) {
-            itemsIndexed(items = state.allPhotos.data, key = { index, item -> item.id.plus(index) }) { index, item ->
-                onScrollPositionChange(index)
-                ListItem(item) { photoId ->
-                    openDetail(photoId)
-                }
-            }
-
-            item { Spacer(modifier = Modifier.height(30.dp)) }
-
-            when (photosResource) {
-                is Resource.Loading -> {
-                    item {
-                        Loading()
+            LazyColumn(state = listState) {
+                itemsIndexed(
+                    items = if (state.searchQuery.isEmpty()) state.allPhotos.data else state.filteredPhotos.data,
+                    key = { index, item -> item.id.plus(index) })
+                { index, item ->
+                    onScrollPositionChange(index)
+                    ListItem(item) { photoId ->
+                        openDetail(photoId)
                     }
                 }
 
-                is Resource.Error -> {
-                    item {
-                        Error(photosResource.cause, onRetry)
-                    }
-                }
+                item { Spacer(modifier = Modifier.height(30.dp)) }
 
-                else -> {}
+                when (photosResource) {
+                    is Resource.Loading -> item { Loading() }
+                    is Resource.Error -> item { Error(photosResource.cause, onRetry) }
+                    else -> {}
+                }
             }
         }
     }
+
 
 }
 
@@ -100,7 +109,7 @@ fun ModifyLimitsScreenPreview(
     @PreviewParameter(ListScreenStateProvider::class) state: ListPhotoState
 ) {
     ListContent(
-        state = state, {}, {}
+        state = state, {}, {}, {}
     ) {}
 }
 

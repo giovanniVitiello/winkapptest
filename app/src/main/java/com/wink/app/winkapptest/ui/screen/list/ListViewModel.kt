@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.wink.app.domain.PagedList
 import com.wink.app.domain.addPage
 import com.wink.app.domain.model.Photo
+import com.wink.app.domain.toPagedList
 import com.wink.app.domain.usecase.GetPhotosUseCase
 import com.wink.app.winkapptest.navigation.NavigationManager
 import com.wink.app.winkapptest.navigation.direction.AppDirections
@@ -55,7 +56,7 @@ class ListViewModel @Inject constructor(
     private suspend fun setScrollPosition(position: Int) {
         if (state.value.photoListResource is Resource.Success) {
             val list = (state.value.photoListResource as Resource.Success<PagedList<Photo>>).data
-            if ((position + 1) >= (state.value.allPhotos.size))
+            if ((position + 1) >= (state.value.allPhotos.size) && state.value.searchQuery.isEmpty())
                 getNextPage(list)
         }
     }
@@ -146,6 +147,19 @@ class ListViewModel @Inject constructor(
             ListPhotoAction.RetryNextPage -> {
                 viewModelScope.launchSafe {
                     retryNextPage()
+                }
+            }
+
+            is ListPhotoAction.OnSearchQueryChanged -> {
+                viewModelScope.launchSafe {
+                    state.update { currentState ->
+                        currentState.copy(
+                            searchQuery = action.query,
+                            filteredPhotos = state.value.allPhotos.data.filter {
+                                it.description.contains(action.query, ignoreCase = true) || it.author.contains(action.query, ignoreCase = true)
+                            }.toPagedList()
+                        )
+                    }
                 }
             }
         }
