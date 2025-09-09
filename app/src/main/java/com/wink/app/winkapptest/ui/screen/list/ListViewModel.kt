@@ -78,7 +78,8 @@ class ListViewModel @Inject constructor(
             is Resource.Success -> {
                 state.update { currentState ->
                     currentState.copy(
-                        photoListResource = Resource.Success(data = photos.data), allPhotos = state.value.allPhotos.addPage(photos.data),
+                        photoListResource = Resource.Success(data = photos.data),
+                        allPhotos = state.value.allPhotos.addPage(photos.data),
                         firstPage = Resource.Success(data = Any())
                     )
                 }
@@ -86,21 +87,13 @@ class ListViewModel @Inject constructor(
 
             is Resource.Loading -> if (page != FIRST_PAGE) {
                 state.update { currentState ->
-                    currentState.copy(
-                        allPhotos = state.value.allPhotos,
-                        photoListResource = photos,
-                        firstPage = Resource.Success(data = Any())
-                    )
+                    currentState.copy(allPhotos = state.value.allPhotos, photoListResource = photos, firstPage = Resource.Success(data = Any()))
                 }
             }
 
             else -> {
                 state.update { currentState ->
-                    currentState.copy(
-                        allPhotos = state.value.allPhotos,
-                        photoListResource = photos,
-                        firstPage = Resource.Success(data = Any())
-                    )
+                    currentState.copy(allPhotos = state.value.allPhotos, photoListResource = photos, firstPage = Resource.Success(data = Any()))
                 }
             }
         }

@@ -59,8 +59,8 @@ fun ListItem(
             ) {
                 Card(
                     modifier = Modifier
-                        .clip(CircleShape)
                         .padding(8.dp)
+                        .clip(CircleShape)
                         .size(48.dp)
                 ) {
                     NetworkImage(
@@ -81,8 +81,7 @@ fun ListItem(
                         text = photo.author,
                         fontWeight = FontWeight.Medium,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        modifier = Modifier.padding(bottom = 2.dp)
+                        overflow = TextOverflow.Ellipsis
                     )
                     Text(
                         text = photo.description,

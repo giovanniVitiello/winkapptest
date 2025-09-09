@@ -16,4 +16,7 @@ class UnsplashRepositoryImpl @Inject constructor(
         return response.map { it.toDomain() }
             .let { it.toPagedList(page, it.size < perPage) }
     }
+
+    override suspend fun getDetail(id: String): Photo =
+        api.getPhotoDetail(id).toDomain()
 }

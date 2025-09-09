@@ -83,9 +83,6 @@ dependencies {
     kapt(libs.hilt.compiler)
     implementation(libs.hilt.navigation.compose)
 
-    implementation(libs.paging.runtime)
-    implementation(libs.paging.compose)
-
     implementation(libs.lottie.compose)
 
     androidTestImplementation(libs.androidx.junit)
